@@ -2,11 +2,10 @@ package org.tomighty.plugin.helloworld;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tomighty.ioc.Initializable;
-import org.tomighty.ioc.Inject;
-import org.tomighty.ioc.New;
-import org.tomighty.log.Log;
+import org.tomighty.bus.Bus;
 import org.tomighty.plugin.Plugin;
+
+import javax.inject.Inject;
 
 /**
  * The world's most famous programming greeting.
@@ -15,35 +14,30 @@ import org.tomighty.plugin.Plugin;
  * jar. And you must put your plugin's fully-qualified class name
  * in a tomighty-plugin.properties file at the root of your jar file.
  * See the sample file at /src/main/resources directory in this project.
- *
- * The Initializable interface is optional.
  */
-public class HelloWorldPlugin implements Plugin, Initializable {
+public class HelloWorldPlugin implements Plugin {
 
-    @Inject @New
-    private Log tomightyLogger;
+    private final Bus bus;
 
     /**
      * This logger is here to show you that you can use whatever
      * you want with your plugin. Just don't forget to package all
      * dependency jars along with your plugin jar.
      */
-    private Logger slf4jLogger = LoggerFactory.getLogger(getClass());
+    private final Logger slf4jLogger;
 
-    public HelloWorldPlugin() {
+    @Inject
+    public HelloWorldPlugin(Bus bus) {
+        this.bus = bus;
+        slf4jLogger = LoggerFactory.getLogger(getClass());
         slf4jLogger.info("Hello world with slf4j logger");
-    }
-
-    @Override
-    public void initialize() {
-        tomightyLogger.info("Hello world with Tomighty's logger");
     }
 
     /**
      * This method is used by unit tests. You don't need to add it.
      */
-    public Log getInjectedLogger() {
-        return tomightyLogger;
+    public Bus getInjectedBus() {
+        return bus;
     }
 
 }
