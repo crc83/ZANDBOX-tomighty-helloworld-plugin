@@ -1,10 +1,13 @@
 package org.tomighty.plugin.helloworld;
 
+import org.apache.commons.math.random.JDKRandomGenerator;
+import org.apache.commons.math.random.RandomGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tomighty.bus.Bus;
 import org.tomighty.plugin.Plugin;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 /**
@@ -18,19 +21,24 @@ import javax.inject.Inject;
 public class HelloWorldPlugin implements Plugin {
 
     private final Bus bus;
+    private final Logger slf4jLogger = LoggerFactory.getLogger(getClass());
 
     /**
-     * This logger is here to show you that you can use whatever
-     * you want with your plugin. Just don't forget to package all
-     * dependency jars along with your plugin jar.
+     * This random generator is here to show you that you can use whatever
+     * libraries you want with your plugin. Just don't forget to include
+     * them in your plugin distribution.
      */
-    private final Logger slf4jLogger;
+    private final RandomGenerator randomGenerator = new JDKRandomGenerator();
 
     @Inject
     public HelloWorldPlugin(Bus bus) {
         this.bus = bus;
-        slf4jLogger = LoggerFactory.getLogger(getClass());
-        slf4jLogger.info("Hello world with slf4j logger");
+    }
+
+    @PostConstruct
+    public void initialize() {
+        int randomNumber = randomGenerator.nextInt();
+        slf4jLogger.info("Hello world! Look the random number I just generated {}", randomNumber);
     }
 
     /**

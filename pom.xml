@@ -23,6 +23,22 @@
 	</properties>
 
     <dependencies>
+
+        <!--
+            Each plugin is loaded in isolation (in its own classloader) which means
+            you can use any 3rd party library you want. All jars that go with you
+            plugin will be automatically loaded.
+        -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math</artifactId>
+            <version>2.2</version>
+        </dependency>
+
+        <!--
+            Set scope as 'provided' for libraries that Tomighty already
+            depends on. Those you must not distribute with your plugin.
+        -->
         <dependency>
             <groupId>org.tomighty</groupId>
             <artifactId>tomighty</artifactId>
@@ -36,14 +52,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.4</version>
+            <groupId>com.mycila</groupId>
+            <artifactId>mycila-guice</artifactId>
+            <version>2.5.ga</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
+            <artifactId>slf4j-api</artifactId>
             <version>1.6.4</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
